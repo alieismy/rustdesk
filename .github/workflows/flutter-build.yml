@@ -9,6 +9,11 @@ on:
       upload-tag:
         type: string
         default: "nightly"
+    secrets:
+      RENDEZVOUS_SERVER:
+        required: false
+      RS_PUB_KEY:
+        required: false
 
 # NOTE: F-Droid builder script 'flutter/build_fdroid.sh' reads environment
 # variables from this workflow!
@@ -46,6 +51,9 @@ env:
   MACOS_P12_BASE64: "${{ secrets.MACOS_P12_BASE64 }}"
   UPLOAD_ARTIFACT: "${{ inputs.upload-artifact }}"
   SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}-2"
+  # To make a custom build with your own servers set the below secret variables
+  RENDEZVOUS_SERVER: ${{ secrets.RENDEZVOUS_SERVER }}
+  RS_PUB_KEY: ${{ secrets.RS_PUB_KEY }}
 
 jobs:
   generate-bridge:
