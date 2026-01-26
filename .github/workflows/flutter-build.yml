@@ -242,8 +242,11 @@ jobs:
           path: rustdesk
 
       - name: Sign rustdesk files
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        # if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        if: env.UPLOAD_ARTIFACT == 'true' && startsWith(env.SIGN_BASE_URL, 'http') && env.SIGN_SECRET_KEY != ''
         shell: bash
+        env: 
+          SIGN_SECRET_KEY: ${{ secrets.SIGN_SECRET_KEY }}
         run: |
           pip3 install requests argparse
           BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./rustdesk/
@@ -408,8 +411,11 @@ jobs:
           path: Release
 
       - name: Sign rustdesk files
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        # if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        if: env.UPLOAD_ARTIFACT == 'true' && startsWith(env.SIGN_BASE_URL, 'http')  && env.SIGN_SECRET_KEY != ''
         shell: bash
+        env:
+          SIGN_SECRET_KEY: ${{ secrets.SIGN_SECRET_KEY }}
         run: |
           pip3 install requests argparse
           BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./Release/
