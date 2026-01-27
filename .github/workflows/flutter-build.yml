@@ -50,7 +50,8 @@ env:
   ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
   MACOS_P12_BASE64: "${{ secrets.MACOS_P12_BASE64 }}"
   UPLOAD_ARTIFACT: "${{ inputs.upload-artifact }}"
-  SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}-2"
+  # SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}-2"
+  SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL || '' }}"
   # To make a custom build with your own servers set the below secret variables
   RENDEZVOUS_SERVER: ${{ secrets.RENDEZVOUS_SERVER }}
   RS_PUB_KEY: ${{ secrets.RS_PUB_KEY }}
@@ -243,10 +244,8 @@ jobs:
 
       - name: Sign rustdesk files
         # if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
-        if: env.UPLOAD_ARTIFACT == 'true' && startsWith(env.SIGN_BASE_URL, 'http') && env.SIGN_SECRET_KEY != ''
+        if: env.UPLOAD_ARTIFACT == 'true' && startsWith(env.SIGN_BASE_URL, 'http') 
         shell: bash
-        env: 
-          SIGN_SECRET_KEY: ${{ secrets.SIGN_SECRET_KEY }}
         run: |
           pip3 install requests argparse
           BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./rustdesk/
@@ -412,10 +411,8 @@ jobs:
 
       - name: Sign rustdesk files
         # if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
-        if: env.UPLOAD_ARTIFACT == 'true' && startsWith(env.SIGN_BASE_URL, 'http')  && env.SIGN_SECRET_KEY != ''
+        if: env.UPLOAD_ARTIFACT == 'true' && startsWith(env.SIGN_BASE_URL, 'http')
         shell: bash
-        env:
-          SIGN_SECRET_KEY: ${{ secrets.SIGN_SECRET_KEY }}
         run: |
           pip3 install requests argparse
           BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./Release/
