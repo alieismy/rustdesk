@@ -11,9 +11,9 @@ on:
         default: "nightly"
     secrets:
       RENDEZVOUS_SERVER:
-        required: false
+        required: true
       RS_PUB_KEY:
-        required: false
+        required: true
 
 # NOTE: F-Droid builder script 'flutter/build_fdroid.sh' reads environment
 # variables from this workflow!
